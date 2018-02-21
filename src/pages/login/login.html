@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+  <img src="assets/img/logo.png" alt="logo" class="logo">
+
+  <ion-card>
+      <ion-card-content>
+        <ion-item>
+          <ion-label floating >Email</ion-label>
+          <ion-input type="email" [(ngModel)]="account.email"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating >Password</ion-label>
+          <ion-input type="password" [(ngModel)]="account.password"></ion-input>
+        </ion-item>
+      </ion-card-content>
+      <ion-row padding float-right>
+        <button ion-button navPush="RegisterPage" margin-right color="primary">Register</button>
+        <button ion-button color="secondary" (click)="login()">Login</button>
+      </ion-row>
+    </ion-card>
+
+</ion-content>

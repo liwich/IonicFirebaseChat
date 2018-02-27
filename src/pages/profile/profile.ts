@@ -46,10 +46,11 @@ export class ProfilePage  implements OnInit{
 
     saveProfile(){
       if(this.authenticatedUser){
+        this.loader.show();
         this.profile.email= this.authenticatedUser.email;
         this.data.saveProfile(this.authenticatedUser, this.profile)
         .then(response=>{
-          console.log(response);
+          this.loader.hide();
         })
       }
     }

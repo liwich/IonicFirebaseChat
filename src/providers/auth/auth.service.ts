@@ -13,9 +13,13 @@ export class AuthService {
   }
 
   signInWithEmailAndPassword(email:string, password:string){
-    return this.afAuth.auth.signInWithEmailAndPassword(email,password)
-    .then(response=> response)
-    .catch(error => error)
+      return this.afAuth.auth.signInWithEmailAndPassword(email,password)
+      .then(response=>{
+        if(response.uid){
+          return response;         
+        }
+      })
+      .catch(error=>error)
   }
 
   registerWithEmailAndPassword(email:string, password:string){

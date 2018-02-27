@@ -1,3 +1,4 @@
+
 <ion-header>
 
   <ion-navbar>
@@ -7,6 +8,33 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content >
+  <ion-row class="background-primary" >
+      <img id="profile-img" src="assets/img/profile-placeholder.png"/>    
+  </ion-row>
 
+  <ion-card padding>
+      <ion-card-content>
+        <ion-item>
+          <ion-label floating >First Name</ion-label>
+          <ion-input type="text" [(ngModel)]="profile.firstName"></ion-input>
+        </ion-item>      
+  
+  
+        <ion-item>
+            <ion-label floating>Last Name</ion-label>
+            <ion-input type="text" [(ngModel)]="profile.lastName"></ion-input>
+          </ion-item> 
+          
+          
+        <ion-item>
+            <ion-label floating>Date of birth</ion-label>
+            <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="profile.dateOfBirth"></ion-datetime>
+          </ion-item>      
+      </ion-card-content>
+      <ion-row float-right>
+        <button ion-button color="primary" (click)="saveProfile()" >Save</button>
+      </ion-row>
+    </ion-card>
+  
 </ion-content>

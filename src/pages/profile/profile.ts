@@ -1,3 +1,4 @@
+import { LoadingService } from './../../providers/loading/loading.service';
 import { Profile } from './../../models/profile/profile';
 import { User } from 'firebase/app';
 import { AuthService } from './../../providers/auth/auth.service';
@@ -5,13 +6,6 @@ import { DataService } from './../../providers/data/data.service';
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
-
-/**
- * Generated class for the ProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -29,17 +23,20 @@ export class ProfilePage  implements OnInit{
   constructor(
     private navCtrl: NavController, 
     private navParams: NavParams,
-    private data:DataService,
-    private auth:AuthService) {
+    private data: DataService,
+    private loader: LoadingService,
+    private auth: AuthService) {
 
       this.authenticatedUser$ = auth.getAuthenticatedUser().subscribe(user=>{
         this.authenticatedUser= user;
       })
     }
-    
+
     ngOnInit(): void {
+      this.loader.show();
       this.auth.getAuthenticatedUser().subscribe(
         (user:User)=>{
+          this.loader.hide();
           this.data.getProfile(user).snapshotChanges().subscribe((profile)=>{
             this.profile = profile.payload.val()
           })

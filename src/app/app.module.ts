@@ -13,6 +13,7 @@ import { MyApp } from './app.component';
 import { AuthService } from '../providers/auth/auth.service';
 import { DataService } from '../providers/data/data.service';
 import { FormsModule } from '@angular/forms';
+import { LoadingService } from '../providers/loading/loading.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { FormsModule } from '@angular/forms';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
     ToastService,
-    DataService
+    DataService,
+    LoadingService
   ]
 })
 export class AppModule {}

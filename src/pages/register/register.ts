@@ -1,3 +1,5 @@
+import { ToastService } from './../../providers/toast/toast.service';
+import { LoadingService } from './../../providers/loading/loading.service';
 import { AuthService } from './../../providers/auth/auth.service';
 import { Account } from './../../models/account/account.interface';
 import { Component } from '@angular/core';
@@ -12,19 +14,26 @@ export class RegisterPage {
 
   account= {} as Account;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private auth:AuthService) {
+  constructor(
+    private navCtrl: NavController, 
+    private navParams: NavParams, 
+    private auth:AuthService,
+    private toast:ToastService,
+    private loader: LoadingService) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RegisterPage');
   }
 
  register(){
+      this.loader.show();
       this.auth.registerWithEmailAndPassword(this.account.email, this.account.password)
       .then(response=>{
+        this.loader.hide();
         this.navCtrl.setRoot("EditProfilePage");
       }).catch(error=>{
-        console.error(error);
+        this.loader.hide();
+        this.toast.show("There was an error registering your account, please try again");
       })
   }
 

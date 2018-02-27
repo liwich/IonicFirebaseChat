@@ -1,3 +1,4 @@
+import { LoadingService } from './../../providers/loading/loading.service';
 import { DataService } from './../../providers/data/data.service';
 import { AuthService } from './../../providers/auth/auth.service';
 import { Account } from './../../models/account/account.interface';
@@ -14,7 +15,13 @@ import { Subscription } from 'rxjs/Subscription';
 export class LoginPage {
 
   account ={} as Account;
-  constructor(private data: DataService,public navCtrl: NavController, public navParams: NavParams, private auth:AuthService, private toast:ToastService) {
+  constructor(
+    private data: DataService,
+    private navCtrl: NavController, 
+    private navParams: NavParams, 
+    private auth:AuthService, 
+    private toast:ToastService,
+    private loader: LoadingService) {
   }
 
   profileObject:Subscription;
@@ -24,13 +31,17 @@ export class LoginPage {
   }
 
   ionViewWillLeave(){
-    console.log("unsuscribe");
-    this.profileObject.unsubscribe();
+    if(this.profileObject){
+      this.profileObject.unsubscribe();    
+    }
   }
 
  login(){  
+   this.loader.show();
     this.auth.signInWithEmailAndPassword(this.account.email, this.account.password)
     .then(response=>{
+
+      this.loader.hide();      
       if(response.uid){
         this.profileObject= this.data.getProfile(response).snapshotChanges().subscribe(profile=>{
           if(profile.key){
@@ -38,7 +49,6 @@ export class LoginPage {
           }else{
             this.navCtrl.setRoot("EditProfilePage")
           }
-          
         })
       }else{
         this.toast.show("Incorrect credentials");  

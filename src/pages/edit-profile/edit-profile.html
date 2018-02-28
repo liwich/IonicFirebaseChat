@@ -1,37 +1,36 @@
-
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>EditProfile</ion-title>
+    <ion-title>Edit Profile</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
-<ion-content padding>
+<ion-content>
   
-  <ion-card padding>
-    <ion-card-content>
+ <ion-row class="background-primary" padding-vertical>
+   <img id="profile-img" src="assets/img/avatar.png"/>
+  </ion-row>
+
+  <ion-row padding>
       <ion-item>
         <ion-label >First Name</ion-label>
         <ion-input type="text" [(ngModel)]="profile.firstName"></ion-input>
       </ion-item>      
-
-
+      
       <ion-item>
           <ion-label >Last Name</ion-label>
           <ion-input type="text" [(ngModel)]="profile.lastName"></ion-input>
         </ion-item> 
         
-        
       <ion-item>
           <ion-label >Date of birth</ion-label>
           <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="profile.dateOfBirth"></ion-datetime>
-        </ion-item>      
-    </ion-card-content>
-    <ion-row float-right>
+        </ion-item>
+  </ion-row>
+
+  <ion-row float-right padding>
       <button ion-button color="primary" (click)="saveProfile()" >Save</button>
-    </ion-row>
-  </ion-card>
+  </ion-row>
 
 </ion-content>

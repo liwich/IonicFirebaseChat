@@ -1,0 +1,25 @@
+
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Search User</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content >
+
+<ion-searchbar [(ngModel)]="query"  (ionInput)="searchUser()" ></ion-searchbar>
+<ion-list *ngIf="profiles.length>0">
+
+  <ion-item  *ngFor="let profile of profiles">
+      <ion-avatar item-left>
+        <img src="assets/img/avatar.png">
+      </ion-avatar>
+      <h2>{{profile.avatar}}</h2>
+      <p>{{profile.firstName}} {{profile.lastName}}</p>
+    </ion-item>
+
+</ion-list>
+</ion-content>

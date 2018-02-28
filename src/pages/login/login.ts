@@ -43,7 +43,9 @@ export class LoginPage {
 
       this.loader.hide();      
       if(response.uid){
-        this.profileObject= this.data.getProfile(response).snapshotChanges().subscribe(profile=>{
+        this.profileObject= this.data.getProfile(response).snapshotChanges().subscribe(
+          profile=>{
+          console.log(profile);
           if(profile.key){
             this.navCtrl.setRoot("TabsPage");
           }else{

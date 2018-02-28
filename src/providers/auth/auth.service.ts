@@ -28,4 +28,8 @@ export class AuthService {
     .catch(error=>error);
   }
 
+  signOut(){
+    return this.afAuth.auth.signOut();
+  }
+
 }

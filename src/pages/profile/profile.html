@@ -1,4 +1,3 @@
-
 <ion-header>
 
   <ion-navbar color="primary">
@@ -15,22 +14,24 @@
   <ion-row padding>
         <ion-item>
           <ion-label floating >First Name</ion-label>
-          <ion-input type="text" [(ngModel)]="profile.firstName"></ion-input>
+          <ion-input type="text" [(ngModel)]="profile.firstName" (ngModelChange)="saveProfile()"></ion-input>
         </ion-item>      
   
         <ion-item>
             <ion-label floating>Last Name</ion-label>
-            <ion-input type="text" [(ngModel)]="profile.lastName"></ion-input>
+            <ion-input type="text" [(ngModel)]="profile.lastName" (ngModelChange)="saveProfile()"></ion-input>
           </ion-item> 
           
         <ion-item>
             <ion-label floating>Date of birth</ion-label>
-            <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="profile.dateOfBirth"></ion-datetime>
+            <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="profile.dateOfBirth" (ngModelChange)="saveProfile()"></ion-datetime>
           </ion-item>
     </ion-row>
         
-    <ion-row float-right padding>
-        <button ion-button color="primary" (click)="saveProfile()" >Save</button>
+    <ion-row padding>
+      <ion-col >
+          <button ion-button block outline color="danger" (click)="signOut()" >Logout</button>        
+      </ion-col>
     </ion-row>
   
 </ion-content>

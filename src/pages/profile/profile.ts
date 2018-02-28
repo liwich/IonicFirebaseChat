@@ -17,6 +17,7 @@ export class ProfilePage  implements OnInit{
 
   private  authenticatedUser$: Subscription;
   private authenticatedUser: User;
+  private profile$: Subscription;
 
   profile={} as Profile;
   
@@ -26,18 +27,15 @@ export class ProfilePage  implements OnInit{
     private data: DataService,
     private loader: LoadingService,
     private auth: AuthService) {
-
-      this.authenticatedUser$ = auth.getAuthenticatedUser().subscribe(user=>{
-        this.authenticatedUser= user;
-      })
     }
 
     ngOnInit(): void {
       this.loader.show();
-      this.auth.getAuthenticatedUser().subscribe(
+      this.authenticatedUser$ = this.auth.getAuthenticatedUser().subscribe(
         (user:User)=>{
+          this.authenticatedUser= user;
           this.loader.hide();
-          this.data.getProfile(user).snapshotChanges().subscribe((profile)=>{
+          this.profile$ = this.data.getProfile(user).snapshotChanges().subscribe((profile)=>{
             this.profile = profile.payload.val()
           })
         }
@@ -46,13 +44,20 @@ export class ProfilePage  implements OnInit{
 
     saveProfile(){
       if(this.authenticatedUser){
-        this.loader.show();
         this.profile.email= this.authenticatedUser.email;
         this.data.saveProfile(this.authenticatedUser, this.profile)
         .then(response=>{
-          this.loader.hide();
+          console.log(response);
         })
       }
+    }
+
+    signOut(){
+      this.profile$.unsubscribe();
+      this.authenticatedUser$.unsubscribe();
+      this.auth.signOut().then(response => {
+        this.navCtrl.setRoot("LoginPage");
+      })
     }
 
 

@@ -11,9 +11,9 @@
 <ion-content >
 
 <ion-searchbar [(ngModel)]="query"  (ionInput)="searchUser()" ></ion-searchbar>
-<ion-list *ngIf="profiles.length>0">
+<ion-list *ngIf="profiles.length>0" >
 
-  <ion-item  *ngFor="let profile of profiles">
+  <ion-item  *ngFor="let profile of profiles" navPush="MessagePage" [navParams]="{'profile': profile}" >
       <ion-avatar item-left>
         <img src="assets/img/avatar.png">
       </ion-avatar>

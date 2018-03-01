@@ -14,6 +14,7 @@ import { AuthService } from '../providers/auth/auth.service';
 import { DataService } from '../providers/data/data.service';
 import { FormsModule } from '@angular/forms';
 import { LoadingService } from '../providers/loading/loading.service';
+import { ChatService } from '../providers/chat/chat.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { LoadingService } from '../providers/loading/loading.service';
     AuthService,
     ToastService,
     DataService,
-    LoadingService
+    LoadingService,
+    ChatService
   ]
 })
 export class AppModule {}

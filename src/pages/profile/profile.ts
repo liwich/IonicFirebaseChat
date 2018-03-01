@@ -4,7 +4,7 @@ import { User } from 'firebase/app';
 import { AuthService } from './../../providers/auth/auth.service';
 import { DataService } from './../../providers/data/data.service';
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App} from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage()
@@ -26,7 +26,8 @@ export class ProfilePage  implements OnInit{
     private navParams: NavParams,
     private data: DataService,
     private loader: LoadingService,
-    private auth: AuthService) {
+    private auth: AuthService,
+    private app: App) {
     }
 
     ngOnInit(): void {
@@ -56,7 +57,7 @@ export class ProfilePage  implements OnInit{
       this.profile$.unsubscribe();
       this.authenticatedUser$.unsubscribe();
       this.auth.signOut().then(response => {
-        this.navCtrl.setRoot("LoginPage");
+        this.app.getRootNav().setRoot("LoginPage");
       })
     }
 

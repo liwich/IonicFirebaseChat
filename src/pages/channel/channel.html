@@ -3,11 +3,20 @@
 
   <ion-navbar  color="primary">
     <ion-title>Channel</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="showAddChannelDialog()" >
+        <ion-icon name="md-add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-list >
+    <ion-item *ngFor="let channel of channelsList" navPush="ChannelChatPage" [navParams]="{'channel': channel}" >
+      #{{channel.name}}
+    </ion-item>
+  </ion-list>
 </ion-content>

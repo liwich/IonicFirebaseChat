@@ -1,12 +1,10 @@
+import { LoadingService } from './../../providers/loading/loading.service';
+import { Observable } from 'rxjs/Observable';
+import { Channel } from './../../models/channel/channel';
+import { ChatService } from './../../providers/chat/chat.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the ChannelPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage()
 @Component({
@@ -15,11 +13,46 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ChannelPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  channelsList:Channel[];
+  channelsList$: Subscription;
+  constructor(
+    private navCtrl: NavController, 
+    private navParams: NavParams,
+    private alert: AlertController,
+    private chat: ChatService,
+    private loader: LoadingService
+  ) {}
+
+  ionViewDidEnter(){
+    this.getChannels();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ChannelPage');
+  ionViewWillLeave(){
+    if(this.channelsList$){
+      this.channelsList$.unsubscribe();
+    }
+  }
+
+  showAddChannelDialog(){
+    this.alert.create({
+       title:"Channel Name",
+      inputs:[{name: 'channelName'}],
+      buttons:[
+        {text:"Cancel", role:'cancel'},
+        { text:"Save", 
+        handler:data =>{
+        this.chat.addChannel(data.channelName)
+        }}
+      ]
+    }).present();
+  }
+
+  getChannels(){
+    this.loader.show();
+    this.channelsList$ =  this.chat.getChannels().snapshotChanges().map(changes => {
+     this.channelsList = changes.map(c => ({ $key: c.payload.key, ...c.payload.val() }))
+     this.loader.hide();
+    }).subscribe();
   }
 
 }

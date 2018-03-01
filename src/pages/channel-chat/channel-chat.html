@@ -1,0 +1,32 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>#{{channel.name}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list *ngIf="messagesList">
+    <ion-item *ngFor="let message of messagesList" >
+      {{message.content}}
+    </ion-item>
+  </ion-list>
+
+</ion-content>
+<ion-footer>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-10 align-self-center>
+          <ion-textarea placeholder="Type message" no-padding [(ngModel)]="channelMessage.content"></ion-textarea>
+        </ion-col>
+        <ion-col col-2 align-self-center>
+          <button ion-button icon-right (click)="sendMessage()">
+            <ion-icon name="md-send"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-footer>

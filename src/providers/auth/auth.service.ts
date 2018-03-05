@@ -1,5 +1,7 @@
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Injectable } from '@angular/core';
+import { User } from 'firebase/app';
+import 'rxjs/add/operator/mergeMap';
 
 @Injectable()
 export class AuthService {

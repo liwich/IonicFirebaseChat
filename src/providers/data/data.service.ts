@@ -1,10 +1,11 @@
+import { AuthService } from './../auth/auth.service';
 import { Profile } from './../../models/profile/profile';
 import { AngularFireDatabase, AngularFireObject, AngularFireList} from 'angularfire2/database';
+
 import { Injectable } from '@angular/core';
 import { User } from "firebase/app";
-import { Observable } from "rxjs/Observable";
-import "rxjs/operator/take";
-import { Query } from '@firebase/database';
+import 'rxjs/add/operator/mergeMap';
+
 
 @Injectable()
 export class DataService {
@@ -12,7 +13,7 @@ export class DataService {
   profileObject: AngularFireObject<Profile>;
   profilesList: AngularFireList<Profile>;
 
-  constructor(private db: AngularFireDatabase) {
+  constructor(private db: AngularFireDatabase, private auth:AuthService) {
   }
 
   searchUsers(firstName:string){
@@ -23,7 +24,14 @@ export class DataService {
     .startAt(firstName)
     .endAt(firstName+"\uf8ff"));
 
-      return this.profilesList.valueChanges()
+      return this.profilesList.snapshotChanges()
+  }
+
+  getAuthenticatedProfile(){
+    return this.auth.getAuthenticatedUser()
+    .map(user=>user.uid)
+    .mergeMap(uid=> this.db.object(`profiles/${uid}`).snapshotChanges())
+    .map(profile=> ({$key: profile.key,... profile.payload.val()}));
   }
 
   getProfile(user:User){

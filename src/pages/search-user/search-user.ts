@@ -11,7 +11,7 @@ import { Profile } from '../../models/profile/profile';
 })
 export class SearchUserPage {
 
-  profiles: Profile[]=[];
+  profiles: Profile[]= [];
   profiles$: Subscription;
   query:string;
 
@@ -24,11 +24,12 @@ export class SearchUserPage {
   searchUser(){
     var queryTrimmed= this.query.trim();
     if(queryTrimmed===this.query){
-      this.profiles$=this.data.searchUsers(this.query).subscribe(profiles=>{
-        this.profiles= profiles;
-        this.profiles$.unsubscribe();
-      }) 
-    }
+      this.profiles$=this.data.searchUsers(this.query).map(changes => {
+        this.profiles = changes.map(c => ({ $key: c.payload.key, ...c.payload.val() }))
+       }).subscribe(profile=>{
+         this.profiles$.unsubscribe();
+       });
+      }
   }
 
 }

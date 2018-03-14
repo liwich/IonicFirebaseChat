@@ -9,6 +9,11 @@
 
 
 <ion-content padding>
+  <ion-list >
+    <ion-item *ngFor="let message of messages"  >
+      {{message.content}}
+    </ion-item>
+  </ion-list>
 
 </ion-content>
 
@@ -16,11 +21,11 @@
   <ion-grid>
     <ion-row>
       <ion-col col-10 align-self-center>
-        <ion-textarea placeholder="Type message" no-padding ></ion-textarea>
+        <ion-textarea placeholder="Type message" no-padding [(ngModel)]="message.content" ></ion-textarea>
       </ion-col>
       <ion-col col-2 align-self-center>
-        <button ion-button icon-right>
-          <ion-icon name="md-send"></ion-icon>
+        <button ion-button icon-right (click)="sendMessage()">
+          <ion-icon name="md-send" ></ion-icon>
         </button>
       </ion-col>
     </ion-row>

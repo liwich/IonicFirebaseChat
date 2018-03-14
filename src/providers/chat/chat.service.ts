@@ -6,6 +6,10 @@ import { Channel } from './../../models/channel/channel';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/observable/forkJoin'
+import 'rxjs/operators/zip'
+import 'rxjs/operators/mergeMap'
+
+
 
 @Injectable()
 export class ChatService {
@@ -34,7 +38,7 @@ export class ChatService {
       .then(response=>{return response})
   }
 
-  getMessages(userTwoId:String){
+  getMessages(userTwoId:string): Observable<Message[]>{
     return this.auth.getAuthenticatedUser()
     .map(user=>user.uid)
     .mergeMap(
@@ -43,11 +47,16 @@ export class ChatService {
         .snapshotChanges()
     )
     .mergeMap(
-      chats=> chats.map(chat=> this.db.object(`messages/${chat.key}`).snapshotChanges())
-    )
-    .mergeMap(
-      messages=> messages.map(z=>({key: z.key, ... z.payload.val()}))
-    )
+      chats=> {
+        return Observable.forkJoin(
+          chats.map(chat=> this.db.object(`messages/${chat.key}`).snapshotChanges())
+          .map(messages=> messages.map(z=>({key: z.key, ... z.payload.val()})).first()),
+          
+          (...vals: Message[]) => {
+            return vals;
+          }
+        )
+      })
   }
 
 }

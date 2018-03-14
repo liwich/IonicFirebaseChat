@@ -39,7 +39,7 @@ export class MessagePage {
     this.profile = this.navParams.get('profile');
 
     this.authenticatedProfile$ = this.data.getAuthenticatedProfile().subscribe( authProfile=>{
-      this.authenticatedProfile = authProfile
+      this.authenticatedProfile = authProfile;
       this.fillMessageUsers();
 
        this.chat.getMessages(this.profile.$key).subscribe((data:Message[])=>{

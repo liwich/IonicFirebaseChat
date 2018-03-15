@@ -13,11 +13,11 @@
 </ion-header>
 
 <ion-content >
-  <ion-item *ngFor="let message of messageList">
+  <ion-item *ngFor="let message of messages"  (click)="openChat(message)">
     <ion-avatar item-left>
-      <img [src]="message.user.avatar" alt="Avatar">
+      <img src="icon.png" alt="Avatar">
     </ion-avatar>
-    <h2>{{message.user.firstName}} {{message.user.lastName}}</h2>
-    <p>{{message.lastMessage}}</p>
+    <h2>{{message.userToProfile.firstName}} {{message.userToProfile.lastName}}</h2>
+    <p>{{message.content}}</p>
   </ion-item>
 </ion-content>

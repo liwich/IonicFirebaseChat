@@ -21,10 +21,25 @@ export const addUserMessages = functions.database.ref(`messages/{messageId}`).on
         .child(messageKey)
         .set(1)
         .then(response=>{
-            return event.data.key
+            return response
         }).catch(error=>{
-            return event.data.key
+            return error
         });
         
+    }
+);
+
+
+export const generateLastMessage = functions.database.ref(`messages/{messageId}`).onWrite(
+    event=>{
+        const messageKey = event.data.key;
+        const messageValue = event.data.val();
+        admin.database().ref(`/last-messages/${messageValue.userFromId}/${messageValue.userToId}`)
+        .child('key').set(messageKey)
+        .then(response=>{
+            return response
+        }).catch(error=>{
+            return error
+        });
     }
 );

@@ -1,14 +1,9 @@
+import { Profile } from './../../models/profile/profile';
+import { Message } from './../../models/messages/message';
+import { ChatService } from './../../providers/chat/chat.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MESSAGE_LIST } from '../../mocks/messages';
-import { Message } from '../../models/messages/message';
-
-/**
- * Generated class for the InboxPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -17,13 +12,36 @@ import { Message } from '../../models/messages/message';
 })
 export class InboxPage {
 
-  messageList : Message[] = MESSAGE_LIST;
+  messages: Message[];
+
   
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    private navCtrl: NavController, 
+    private navParams: NavParams,
+    private chat:ChatService
+  ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad InboxPage');
+  }
+
+  ionViewWillLoad(){
+    this.chat.getLastMessages()
+    .subscribe((data)=>{
+      this.messages= data;
+      console.log(data);
+    })
+  }
+
+  openChat(message: Message){
+    var profile ={
+      $key: message.userToId,
+      firstName: message.userToProfile.firstName,
+      lastName: message.userToProfile.lastName
+    } as Profile;
+
+    this.navCtrl.push("MessagePage",{profile: profile});
+    
   }
 
 }

@@ -3,17 +3,19 @@ import { ChatService } from './../../providers/chat/chat.service';
 import { Message } from './../../models/messages/message';
 import { AuthService } from './../../providers/auth/auth.service';
 import { Profile } from './../../models/profile/profile';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Rx'
 
 @IonicPage()
 @Component({
   selector: 'page-message',
-  templateUrl: 'message.html',
+  templateUrl: 'message.html'
 })
 export class MessagePage {
+
+  @ViewChild(Content) content: Content;
 
   profile= {} as Profile;
   userId:string;
@@ -33,6 +35,7 @@ export class MessagePage {
   {  }
 
   ionViewDidLoad() {
+    
   }
 
   ionViewWillLoad(){
@@ -44,6 +47,9 @@ export class MessagePage {
 
        this.chat.getMessages(this.profile.$key).subscribe((data:Message[])=>{
         this.messages = data; 
+        setTimeout(() => {
+          this.content.scrollToBottom(100);
+          }, 300);
        })
 
     });
@@ -63,11 +69,18 @@ export class MessagePage {
       };
   }
 
+  keyPressed(e){
+    if(e.keyCode===13){
+      this.sendMessage();
+    }
+  }
+
   ionWillLeave(){
     this.authenticatedProfile$.unsubscribe();
   }
 
   sendMessage(){
+    if(!this.message.content) return;
     this.chat.sendMessage(this.message).then(response=>{
       this.message.content = "";
     })

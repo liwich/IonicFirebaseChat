@@ -59,4 +59,31 @@ export class ChatService {
       })
   }
 
+  getLastMessages(){
+    return this.auth.getAuthenticatedUser()
+    .map(user=>user.uid)
+    .mergeMap(
+      uid=>
+        this.db.list(`last-messages/${uid}`).snapshotChanges()
+    )
+    .mergeMap(
+      messagesIds=>{
+
+        return Observable.forkJoin(
+          
+          messagesIds.map(z=> ({key: z.key, ... z.payload.val()}))
+          .map(
+            chats=> this.db.object(`messages/${chats.key}`).snapshotChanges())
+          .map( messages=> messages.map(z=>({key: z.key, ... z.payload.val()})).first())
+
+          ,
+          (...vals: Message[]) => {
+            return vals;
+          }
+          
+        )
+      }
+    )
+  }
+
 }

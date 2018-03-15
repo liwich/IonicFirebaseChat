@@ -10,25 +10,24 @@
 
 <ion-content padding>
   <ion-list no-lines>
-    <ion-item *ngFor="let message of messages" >
-     <ion-row>
+    <ion-item *ngFor="let message of messages">
+     <ion-row >
        <ion-col [attr.text-right]="message.userFromId===this.authenticatedProfile.$key? '': null">
           <p>{{message.content}}</p>         
        </ion-col>
      </ion-row>
     </ion-item>
   </ion-list>
-
 </ion-content>
 
 <ion-footer>
   <ion-grid>
     <ion-row>
       <ion-col col-10 align-self-center>
-        <ion-textarea placeholder="Type message" no-padding [(ngModel)]="message.content" ></ion-textarea>
+        <ion-input placeholder="Type message" no-padding [(ngModel)]="message.content"  (keypress)="keyPressed($event)" ></ion-input>
       </ion-col>
       <ion-col col-2 align-self-center>
-        <button ion-button icon-right (click)="sendMessage()">
+        <button ion-button icon-right (click)="sendMessage()" [disabled]="!message.content" >
           <ion-icon name="md-send" ></ion-icon>
         </button>
       </ion-col>

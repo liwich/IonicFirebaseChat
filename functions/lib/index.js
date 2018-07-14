@@ -2,12 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
 admin.initializeApp(functions.config().firebase);
 exports.addUserMessages = functions.database.ref(`messages/{messageId}`).onWrite(event => {
     const messageKey = event.data.key;
@@ -24,9 +18,20 @@ exports.addUserMessages = functions.database.ref(`messages/{messageId}`).onWrite
         .child(messageKey)
         .set(1)
         .then(response => {
-        return event.data.key;
+        return response;
     }).catch(error => {
-        return event.data.key;
+        return error;
+    });
+});
+exports.generateLastMessage = functions.database.ref(`messages/{messageId}`).onWrite(event => {
+    const messageKey = event.data.key;
+    const messageValue = event.data.val();
+    admin.database().ref(`/last-messages/${messageValue.userFromId}/${messageValue.userToId}`)
+        .child('key').set(messageKey)
+        .then(response => {
+        return response;
+    }).catch(error => {
+        return error;
     });
 });
 //# sourceMappingURL=index.js.map
